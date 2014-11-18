@@ -4,12 +4,14 @@ Bootstrap modal components for Reagent.
 
 Takes care of all the little details for creating a modal window with Bootstrap.
 
-
-## Install
-<img src="https://raw.githubusercontent.com/Frozenlock/historian/master/modal-example.png"
+<img src="https://raw.githubusercontent.com/Frozenlock/reagent-modals/master/modal-example.png"
  alt="Modal demo" title="Modal demo"/>
 
-...
+## Install
+Add this to your project dependencies:
+
+[![Clojars Project](http://clojars.org/org.clojars.frozenlock/reagent-modals/latest-version.svg)](http://clojars.org/org.clojars.frozenlock/reagent-modals)
+
 
 ## Usage
 
