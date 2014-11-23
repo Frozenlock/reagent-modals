@@ -1,4 +1,4 @@
-(defproject org.clojars.frozenlock/reagent-modals "0.1.0"
+(defproject org.clojars.frozenlock/reagent-modals "0.2.0"
   :description "Bootstrap modal components for Reagent!"
   :url "http://example.com/FIXME"
 
@@ -8,5 +8,5 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [reagent "0.4.2"]]
   :profiles {:dev
-             {:dependencies [[org.clojure/clojurescript "0.0-2322"]]
+             {:dependencies [[org.clojure/clojurescript "0.0-2371" :scope "provided"]]
               :plugins [[lein-cljsbuild "1.0.3"]]}})
