@@ -27,7 +27,7 @@
 (defn close-button
   "A pre-configured close button. Just include it anywhere in the
    modal to let the user dismiss it." []
-   [:button.close {:type "button" :data-dismiss modal-id}
+   [:button.close {:type "button" :data-dismiss "modal"}
      [:span.glyphicon.glyphicon-remove {:aria-hidden "true"}]
      [:span.sr-only "Close"]])
 
