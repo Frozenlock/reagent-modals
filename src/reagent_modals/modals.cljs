@@ -48,12 +48,12 @@
     {:component-did-mount (fn [e] (let [m (js/jQuery (get-modal))]
                                     (.call (aget m "on") m "hidden.bs.modal"
                                            #(do (reset! modal-content [:div]))) ;;clear the modal when hidden
-                                    (when-let [shown-fn (:shown @modal-content)]
-                                      (.call (aget m "on") m "shown.bs.modal" shown-fn)) ;; shown callback
-                                    (when-let [hide-fn (:hide @modal-content)]
-                                      (.call (aget m "on") m "hide.bs.modal" hide-fn))
-                                    (when-let [hidden-fn (:hidden @modal-content)]
-                                      (.call (aget m "on") m "hidden.bs.modal" hidden-fn))))}))
+                                    (.call (aget m "on") m "shown.bs.modal"
+                                           #(when-let [f (:shown @modal-content)] (f)))
+                                    (.call (aget m "on") m "hide.bs.modal"
+                                           #(when-let [f (:hide @modal-content)] (f)))
+                                    (.call (aget m "on") m "hidden.bs.modal"
+                                           #(when-let [f (:hidden @modal-content)] (f)))))}))
 
 
 ;;; main function
