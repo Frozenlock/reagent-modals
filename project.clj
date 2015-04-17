@@ -1,4 +1,4 @@
-(defproject org.clojars.frozenlock/reagent-modals "0.2.2"
+(defproject org.clojars.frozenlock/reagent-modals "0.2.3"
   :description "Bootstrap modal components for Reagent!"
   :url "http://example.com/FIXME"
 

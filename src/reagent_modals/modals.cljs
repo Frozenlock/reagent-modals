@@ -24,6 +24,10 @@
     (.call (aget m "modal") m "show")
     m))
 
+(defn close-modal! []
+  (let [m (js/jQuery (get-modal))]
+    (.call (aget m "modal") m "hide")))
+
 (defn close-button
   "A pre-configured close button. Just include it anywhere in the
    modal to let the user dismiss it." []
@@ -45,15 +49,16 @@
 (def modal-window
   (with-meta
     modal-window*
-    {:component-did-mount (fn [e] (let [m (js/jQuery (get-modal))]
-                                    (.call (aget m "on") m "hidden.bs.modal"
-                                           #(do (reset! modal-content [:div]))) ;;clear the modal when hidden
-                                    (.call (aget m "on") m "shown.bs.modal"
-                                           #(when-let [f (:shown @modal-content)] (f)))
-                                    (.call (aget m "on") m "hide.bs.modal"
-                                           #(when-let [f (:hide @modal-content)] (f)))
-                                    (.call (aget m "on") m "hidden.bs.modal"
-                                           #(when-let [f (:hidden @modal-content)] (f)))))}))
+    {:component-did-mount
+     (fn [e] (let [m (js/jQuery (get-modal))]
+               (.call (aget m "on") m "hidden.bs.modal"
+                      #(do (reset! modal-content [:div]))) ;;clear the modal when hidden
+               (.call (aget m "on") m "shown.bs.modal"
+                      #(when-let [f (:shown @modal-content)] (f)))
+               (.call (aget m "on") m "hide.bs.modal"
+                      #(when-let [f (:hide @modal-content)] (f)))
+               (.call (aget m "on") m "hidden.bs.modal"
+                      #(when-let [f (:hidden @modal-content)] (f)))))}))
 
 
 ;;; main function
