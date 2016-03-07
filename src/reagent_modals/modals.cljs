@@ -53,15 +53,11 @@
      (fn [e] (let [m (js/jQuery (get-modal))]
                (.call (aget m "on") m "hidden.bs.modal"
                       #(do (when-let [f (:hidden @modal-content)] (f))
-                           (reset! modal-content {:content [:div]})
-                           (prn @modal-content)
-                           )) ;;clear the modal when hidden
+                           (reset! modal-content {:content [:div]}))) ;;clear the modal when hidden
                (.call (aget m "on") m "shown.bs.modal"
                       #(when-let [f (:shown @modal-content)] (f)))
                (.call (aget m "on") m "hide.bs.modal"
-                      #(when-let [f (:hide @modal-content)] (f)))
-               (.call (aget m "on") m "hidden.bs.modal"
-                      #(when-let [f (:hidden @modal-content)] (f)))))}))
+                      #(when-let [f (:hide @modal-content)] (f)))))}))
 
 
 ;;; main function
