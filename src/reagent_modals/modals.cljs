@@ -52,7 +52,10 @@
     {:component-did-mount
      (fn [e] (let [m (js/jQuery (get-modal))]
                (.call (aget m "on") m "hidden.bs.modal"
-                      #(do (reset! modal-content [:div]))) ;;clear the modal when hidden
+                      #(do (when-let [f (:hidden @modal-content)] (f))
+                           (reset! modal-content {:content [:div]})
+                           (prn @modal-content)
+                           )) ;;clear the modal when hidden
                (.call (aget m "on") m "shown.bs.modal"
                       #(when-let [f (:shown @modal-content)] (f)))
                (.call (aget m "on") m "hide.bs.modal"
@@ -76,5 +79,6 @@
    - :keyboard -> if `esc' can dismiss the modal. Default to true."
   ([reagent-content] (modal! reagent-content nil))
   ([reagent-content configs]
-     (reset! modal-content (merge {:content reagent-content} configs))
-     (show-modal! (get configs :keyboard true))))
+   (prn configs)
+   (reset! modal-content (merge {:content reagent-content} configs))
+   (show-modal! (get configs :keyboard true))))
