@@ -75,6 +75,5 @@
    - :keyboard -> if `esc' can dismiss the modal. Default to true."
   ([reagent-content] (modal! reagent-content nil))
   ([reagent-content configs]
-   (prn configs)
    (reset! modal-content (merge {:content reagent-content} configs))
    (show-modal! (get configs :keyboard true))))
