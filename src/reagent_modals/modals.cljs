@@ -10,19 +10,26 @@
 
 (def modal-id "reagent-modal")
 
-(def modal-content (atom {:content [:div] 
-                          :shown nil 
+(def modal-content (atom {:content [:div]
+                          :shown nil
                           :size nil}))
 
 (defn get-modal []
   (dom/getElement modal-id))
 
-
-(defn show-modal! [keyboard]
+(defn- with-opts [opts]
   (let [m (js/jQuery (get-modal))]
-    (.call (aget m "modal") m #js {:keyboard keyboard})
+    (.call (aget m "modal") m opts)
     (.call (aget m "modal") m "show")
     m))
+
+(defmulti show-modal! (fn [args] (map? args)))
+(defmethod show-modal! true
+  [{:keys [keyboard backdrop] :or {keyboard true backdrop "static"}}]
+  (with-opts #js {:keyboard keyboard :backdrop backdrop}))
+
+(defmethod show-modal! false [keyboard]
+  (with-opts #js {:keyboard keyboard}))
 
 (defn close-modal! []
   (let [m (js/jQuery (get-modal))]
@@ -66,14 +73,15 @@
 (defn modal!
   "Update and show the modal window. `reagent-content' is a normal
    reagent component. `configs' is an optional map of advanced
-   configurations: 
+   configurations:
 
    - :shown -> a function called once the modal is shown.
    - :hide -> a function called once the modal is asked to hide.
    - :hidden -> a function called once the modal is hidden.
    - :size -> Can be :lg (large) or :sm (small). Everything else defaults to medium.
-   - :keyboard -> if `esc' can dismiss the modal. Default to true."
+   - :keyboard -> if `esc' can dismiss the modal. Default to true.
+   - :backdrop -> (true : dark overlay, false : transparent, \"static\" : not possible to close the modal when clicking outside of it "
   ([reagent-content] (modal! reagent-content nil))
   ([reagent-content configs]
    (reset! modal-content (merge {:content reagent-content} configs))
-   (show-modal! (get configs :keyboard true))))
+   (show-modal! (select-keys configs [:keyboard :backdrop]))))
