@@ -50,8 +50,8 @@ We currently support these following configs:
 
 - :size -> Can be :lg (large) or :sm (small). Everything else defaults to medium.
 - :keyboard -> if true, `esc' key can dismiss the modal. Default to true."
-- :backdrop -> true (default): backdrop. ||
-               "static" : backdrop, but doesn't close the model when clicked upon. ||
+- :backdrop -> true (default): normal backdrop. ||
+               "static" : backdrop, but doesn't close the modal when clicked upon. ||
                false : no backdrop.
 
 ```clj
