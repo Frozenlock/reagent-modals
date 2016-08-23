@@ -49,8 +49,10 @@ We currently support these following configs:
 - :hidden -> a function called once the modal is hidden.
 
 - :size -> Can be :lg (large) or :sm (small). Everything else defaults to medium.
-- :keyboard -> if `esc' can dismiss the modal. Default to true."
-
+- :keyboard -> if true, `esc' key can dismiss the modal. Default to true."
+- :backdrop -> true (default): backdrop. 
+               "static" : backdrop, but doesn't close the model when clicked upon.
+               false : no backdrop.
 
 ```clj
 :on-click #(reagent-modals/modal! [:div "some message to the user!"]

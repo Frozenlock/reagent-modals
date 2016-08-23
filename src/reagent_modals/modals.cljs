@@ -23,10 +23,10 @@
     (.call (aget m "modal") m "show")
     m))
 
-(defmulti show-modal! (fn [args] (map? args)))
+(defmulti show-modal! (fn [args] (map? args))) ;; backward compatibility
 (defmethod show-modal! true
-  [{:keys [keyboard backdrop] :or {keyboard true backdrop "static"}}]
-  (with-opts #js {:keyboard keyboard :backdrop backdrop}))
+  [{:keys [keyboard backdrop] :or {keyboard true backdrop true}}]
+  (with-opts #js {:keyboard keyboard :backdrop  backdrop}))
 
 (defmethod show-modal! false [keyboard]
   (with-opts #js {:keyboard keyboard}))
@@ -79,8 +79,10 @@
    - :hide -> a function called once the modal is asked to hide.
    - :hidden -> a function called once the modal is hidden.
    - :size -> Can be :lg (large) or :sm (small). Everything else defaults to medium.
-   - :keyboard -> if `esc' can dismiss the modal. Default to true.
-   - :backdrop -> (true : dark overlay, false : transparent, \"static\" : not possible to close the modal when clicking outside of it "
+   - :keyboard -> if true, `esc' key can dismiss the modal. Default to true.
+   - :backdrop -> true (default): backdrop. 
+                  \"static\" : backdrop, but doesn't close the model when clicked upon. 
+                  false : no backdrop."
   ([reagent-content] (modal! reagent-content nil))
   ([reagent-content configs]
    (reset! modal-content (merge {:content reagent-content} configs))
