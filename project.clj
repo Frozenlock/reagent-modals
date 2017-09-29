@@ -1,4 +1,4 @@
-(defproject org.clojars.frozenlock/reagent-modals "0.2.7"
+(defproject org.clojars.frozenlock/reagent-modals "0.2.8"
   :description "Bootstrap modal components for Reagent!"
 
   :license {:name "Eclipse Public License"

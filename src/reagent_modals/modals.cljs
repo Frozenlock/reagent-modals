@@ -10,7 +10,7 @@
 
 (def modal-id "reagent-modal")
 
-(defonce modal-content (atom {:content [:div]
+(defonce modal-content (atom {:content nil;[:div]
                               :shown nil
                               :size nil}))
 
@@ -44,27 +44,38 @@
 
 
 
-(defn modal-window* []
-  (let [{:keys [content size]} @modal-content
-        size-class {:lg "modal-lg"
-                    :sm "modal-sm"}]
-    [:div.modal.fade {:id modal-id :tab-index -1 :role "dialog"}
-     [:div.modal-dialog {:class (get size-class size)}
-      [:div.modal-content
-       content]]]))
-
-(def modal-window
-  (with-meta
-    modal-window*
-    {:component-did-mount
-     (fn [e] (let [m (js/jQuery (get-modal))]
-               (.call (aget m "on") m "hidden.bs.modal"
-                      #(do (when-let [f (:hidden @modal-content)] (f))
-                           (reset! modal-content {:content [:div]}))) ;;clear the modal when hidden
-               (.call (aget m "on") m "shown.bs.modal"
-                      #(when-let [f (:shown @modal-content)] (f)))
-               (.call (aget m "on") m "hide.bs.modal"
-                      #(when-let [f (:hide @modal-content)] (f)))))}))
+(defn modal-window []
+  (let [unmounting? (atom nil)]
+    (r/create-class
+     {:component-did-mount
+      (fn [e] (let [m (js/jQuery (get-modal))]
+                (.call (aget m "on") m "hidden.bs.modal"
+                       #(do (when-let [f (:hidden @modal-content)] (f))
+                            ;; don't erase the content if we are
+                            ;; unmounting the modal window, we are
+                            ;; probably only reloading the app.
+                            (when-not @unmounting?
+                              (swap! modal-content assoc :content nil))))
+                (.call (aget m "on") m "shown.bs.modal"
+                       #(when-let [f (:shown @modal-content)] (f)))
+                (.call (aget m "on") m "hide.bs.modal"
+                       #(when-let [f (:hide @modal-content)] (f))))
+        ;; we might need to show the modal after an app reload.
+        (let [mc @modal-content]
+          (when (:content mc)
+            (show-modal! mc))))
+      :component-will-unmount (fn []
+                                (reset! unmounting? true)
+                                (close-modal!))
+      :reagent-render
+      (fn []
+        (let [{:keys [content size]} @modal-content
+              size-class {:lg "modal-lg"
+                          :sm "modal-sm"}]
+          [:div.modal.fade {:id modal-id :tab-index -1 :role "dialog"}
+           [:div.modal-dialog {:class (get size-class size)}
+            [:div.modal-content
+             content]]]))})))
 
 
 ;;; main function
