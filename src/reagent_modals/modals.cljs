@@ -10,9 +10,9 @@
 
 (def modal-id "reagent-modal")
 
-(def modal-content (atom {:content [:div]
-                          :shown nil
-                          :size nil}))
+(defonce modal-content (atom {:content [:div]
+                              :shown nil
+                              :size nil}))
 
 (defn get-modal []
   (dom/getElement modal-id))
